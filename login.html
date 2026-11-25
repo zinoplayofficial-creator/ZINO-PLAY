@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ZINO PLAY+ | Log in</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0a0a0a; color: #f5f5f5; font-family: Georgia, serif; text-align: center; }
+  header { padding: 20px; border-bottom: 1px solid #d4af37; }
+  .logo { color: #d4af37; font-size: 28px; letter-spacing: 4px; font-weight: bold; }
+  .box { max-width: 380px; margin: 40px auto; padding: 0 20px; }
+  h1 { color: #d4af37; font-size: 26px; margin-bottom: 20px; }
+  input { width: 100%; padding: 14px; margin-bottom: 14px; border-radius: 6px; border: 1px solid #d4af37; background: #111; color: #fff; font-size: 16px; }
+  button { width: 100%; padding: 14px; margin-bottom: 12px; border-radius: 6px; border: none; font-size: 16px; font-weight: bold; cursor: pointer; }
+  .gold { background: #d4af37; color: #000; }
+  .dark { background: #222; color: #d4af37; border: 1px solid #d4af37; }
+  #msg { margin-top: 16px; color: #cccccc; min-height: 24px; }
+</style>
+</head>
+<body>
+  <header><div class="logo">ZINO PLAY+</div></header>
+  <div class="box">
+    <h1>Welcome</h1>
+    <input id="email" type="email" placeholder="Email">
+    <input id="password" type="password" placeholder="Password (at least 6 characters)">
+    <button class="gold" onclick="logIn()">Log in</button>
+    <button class="dark" onclick="signUp()">Create account</button>
+    <div id="msg"></div>
+  </div>
+<script>
+  const db = supabase.createClient(
+    "https://cgffpefbzhxtdezwtike.supabase.co",
+    "sb_publishable_W8PwZzQrfori9kbaLjPdxA_eb_NqB1c"
+  );
+  const msg = document.getElementById("msg");
+  async function signUp() {
+    msg.textContent = "Creating account...";
+    const { error } = await db.auth.signUp({
+      email: document.getElementById("email").value,
+      password: document.getElementById("password").value
+    });
+    msg.textContent = error ? error.message : "Account created. Check your email to confirm, then log in.";
+  }
+  async function logIn() {
+    msg.textContent = "Logging in...";
+    const { error } = await db.auth.signInWithPassword({
+      email: document.getElementById("email").value,
+      password: document.getElementById("password").value
+    });
+    msg.textContent = error ? error.message : "Logged in successfully!";
+  }
+</script>
+</body>
+</html>
